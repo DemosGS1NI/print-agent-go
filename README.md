@@ -1,17 +1,17 @@
 # Print Agent Go
 
-# This project is a fork of the excellent LabelZoom Print Agent.
+# This project was originally forked from the LabelZoom Print Agent and has since evolved for a standalone workflow.
 
 
 [![Go Version](https://img.shields.io/badge/Go-1.24-00ADD8?logo=go)](https://go.dev/)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
-A lightweight local print agent that enables browser-based printing to direct thermal printers .This agent acts as a bridge between your web browser and RAW printers on your local network, allowing fast and accurate reproduction of barcode labels in the printer's native language (such as Zebra ZPL).
+A lightweight local print agent that enables browser-based printing to direct thermal printers. This agent acts as a bridge between embedded authenticated web pages and RAW printers on your local network, allowing fast and accurate reproduction of barcode labels in the printer's native language (such as Zebra ZPL).
 
 ## 🎯 What It Does
 
 The Print Agent:
-- **Receives print jobs** from your web browser via HTTP
+- **Receives print jobs** from embedded authenticated web pages via HTTP
 - **Forwards print data** to thermal printers via TCP (port 9100)
 - **Supports RAW printing** for direct thermal label printers
 - **Runs locally** to communicate with printers on your network
@@ -40,7 +40,7 @@ The agent will start on port 8080 by default.
 
 - **Go 1.24+** (for building from source)
 - **Network access** to your thermal printers (typically port 9100)
-- **Web browser** with access to [LabelZoom Web App](https://www.labelzoom.net/app)
+- **Web browser** with access to your embedded auth web pages
 
 ## 🔧 Configuration
 
@@ -54,7 +54,7 @@ The print agent uses the following default settings:
 
 ### Allowed CORS Origins
 
-The agent accepts requests from specific and web pages. needs to improve.
+The agent accepts requests only from allowed origins. Update this list to match your frontend domains.
  
 - `http://localhost`
 - `http://localhost:3000`
@@ -132,6 +132,12 @@ Windows and macOS binaries are published on each semantic version tag (`v*.*.*`)
 
 If this repository is public, end users can download these files without creating a GitHub account.
 
+## 🛣️ Roadmap
+
+- Improve embedded auth web pages (UX, token/session handling, and configuration flow)
+- Expand configurable CORS origin management
+- Improve onboarding and troubleshooting docs for end users
+
 ### Windows Code Signing (Optional but Recommended)
 
 The release workflow supports automatic signing of the Windows `.exe` when these repository secrets are configured:
@@ -157,7 +163,6 @@ This project is licensed under the BSD 3-Clause License - see the [LICENSE](LICE
 
 ## 🔗 Links
 
-- **LabelZoom Web App**: [www.labelzoom.net/app](https://www.labelzoom.net/app)
 - **Releases**: [github.com/DemosGS1NI/print-agent-go/releases](https://github.com/DemosGS1NI/print-agent-go/releases)
 - **Issues**: [GitHub Issues](https://github.com/DemosGS1NI/print-agent-go/issues)
 
@@ -166,14 +171,14 @@ This project is licensed under the BSD 3-Clause License - see the [LICENSE](LICE
 ```
 ┌─────────────┐      HTTP POST       ┌──────────────────┐      TCP (9100)      ┌─────────┐
 │   Browser   │ ───────────────────> │  Print Agent     │ ───────────────────> │ Printer │
-│ (LabelZoom) │   (localhost:52045)  │  (Go Service)    │   (RAW ZPL data)     │ (Zebra) │
+│ (Embedded)  │   (localhost:52045)  │  (Go Service)    │   (RAW ZPL data)     │ (Zebra) │
 └─────────────┘                      └──────────────────┘                      └─────────┘
 ```
 
-1. User creates a label in the LabelZoom web app
+1. User creates a label from an embedded authenticated web page
 2. Browser sends print job to local agent via HTTP
 3. Agent forwards ZPL/RAW data to printer via TCP
 4. Printer prints the label
 
 ---
-**Made with ❤️ for the LabelZoom community**
+**Made with ❤️ for local printing workflows**
