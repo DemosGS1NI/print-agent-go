@@ -1,7 +1,6 @@
 package main
 
 import (
-	_ "embed"
 	"fmt"
 	"net"
 	"net/http"
@@ -9,9 +8,6 @@ import (
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
-
-//go:embed resources/labelzoom_logo.txt
-var logo string
 
 type printjob struct {
 	PrinterHostname string `json:"printerHostname"`
@@ -55,11 +51,10 @@ func handlePrint(c *gin.Context) {
 }
 
 func main() {
-	fmt.Println(logo)
 	r := gin.Default()
 	r.SetTrustedProxies([]string{"127.0.0.1", "::1"})
 	r.Use(cors.New(cors.Config{
-		AllowOrigins: []string{"https://www.browser-print.vercel.app", "https://browwser-print.vercel.app", "http://localhost", "http://localhost:3000"},
+		AllowOrigins: []string{"https://www.browser-print.vercel.app", "https://browser-print.vercel.app", "http://localhost", "http://localhost:3000", "http://localhost:5173"},
 		AllowMethods: []string{"POST"},
 		AllowHeaders: []string{"Origin", "Content-Type"}, // TODO: Acess to fetch at 'http://localhost:8080/print' from origin 'http://localhost:3000' has been blocked by CORS policy: Request header field content-type is not allowed by Access-Control-Allow-Headers in preflight response.
 		// ExposeHeaders:    []string{"Content-Length"},

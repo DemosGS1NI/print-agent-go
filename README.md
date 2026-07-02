@@ -1,14 +1,17 @@
-# LabelZoom Print Agent
+# Print Agent Go
+
+# This project is a fork of the excellent LabelZoom Print Agent.
+
 
 [![Docker Hub](https://img.shields.io/badge/Docker%20Hub-labelzoom%2Flz--print--agent--local-blue?logo=docker)](https://hub.docker.com/r/labelzoom/lz-print-agent-local)
 [![Go Version](https://img.shields.io/badge/Go-1.24-00ADD8?logo=go)](https://go.dev/)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
-A lightweight local print agent that enables browser-based printing to direct thermal printers when using the [LabelZoom Web App](https://www.labelzoom.net/app). This agent acts as a bridge between your web browser and RAW printers on your local network, allowing fast and accurate reproduction of barcode labels in the printer's native language (such as Zebra ZPL).
+A lightweight local print agent that enables browser-based printing to direct thermal printers .This agent acts as a bridge between your web browser and RAW printers on your local network, allowing fast and accurate reproduction of barcode labels in the printer's native language (such as Zebra ZPL).
 
 ## 🎯 What It Does
 
-The LabelZoom Print Agent:
+The Print Agent:
 - **Receives print jobs** from your web browser via HTTP
 - **Forwards print data** to thermal printers via TCP (port 9100)
 - **Supports RAW printing** for direct thermal label printers
@@ -85,10 +88,8 @@ The print agent uses the following default settings:
 
 ### Allowed CORS Origins
 
-The agent accepts requests from:
-- `https://labelzoom.net`
-- `https://www.labelzoom.net`
-- `http://local.labelzoom.net`
+The agent accepts requests from specific and web pages. needs to improve.
+ 
 - `http://localhost`
 - `http://localhost:3000`
 
@@ -167,6 +168,25 @@ This project uses GitHub Actions for:
 - ✅ Docker image building
 - ✅ Multi-platform builds (amd64, arm64)
 - ✅ Automatic publishing to Docker Hub on release tags
+
+## 📥 Binary Releases (No GitHub Account Required)
+
+Windows and macOS binaries are published on each semantic version tag (`v*.*.*`).
+
+- Replace `YOUR_ORG` and `YOUR_REPO` with your real values.
+- Latest release page: `https://github.com/YOUR_ORG/YOUR_REPO/releases/latest`
+- Direct Windows ZIP (latest): `https://github.com/YOUR_ORG/YOUR_REPO/releases/latest/download/print-agent-windows-amd64.zip`
+
+If this repository is public, end users can download these files without creating a GitHub account.
+
+### Windows Code Signing (Optional but Recommended)
+
+The release workflow supports automatic signing of the Windows `.exe` when these repository secrets are configured:
+
+- `WINDOWS_SIGN_CERT_BASE64`: Base64-encoded `.pfx` certificate
+- `WINDOWS_SIGN_CERT_PASSWORD`: Password for the `.pfx` certificate
+
+If the secrets are not set, releases are still generated, but the Windows binary is unsigned.
 
 ## 📦 Docker Hub
 
