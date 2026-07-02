@@ -3,7 +3,6 @@
 # This project is a fork of the excellent LabelZoom Print Agent.
 
 
-[![Docker Hub](https://img.shields.io/badge/Docker%20Hub-labelzoom%2Flz--print--agent--local-blue?logo=docker)](https://hub.docker.com/r/labelzoom/lz-print-agent-local)
 [![Go Version](https://img.shields.io/badge/Go-1.24-00ADD8?logo=go)](https://go.dev/)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
@@ -19,46 +18,14 @@ The Print Agent:
 
 ## 🚀 Quick Start
 
-### Using Docker (Recommended)
-
-The easiest way to run the print agent is using Docker:
-
-```bash
-docker run -d -p 52045:8080 labelzoom/lz-print-agent-local
-```
-
-This starts the agent and makes it available at `http://localhost:52045`.
-
-**Why port 52045?** Port 8080 is commonly used by other applications, so we recommend remapping to a higher port (50000+). The default is 52045, but you can use any available port.
-
-### Using Docker Compose
-
-Create a `docker-compose.yml` file:
-
-```yaml
-version: '3.8'
-services:
-  lz-print-agent:
-    image: labelzoom/lz-print-agent-local:latest
-    ports:
-      - "52045:8080"
-    restart: unless-stopped
-```
-
-Then run:
-
-```bash
-docker-compose up -d
-```
-
-### Building from Source
+### Build From Source
 
 If you prefer to build and run the agent locally:
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/lz-print-agent-go.git
-cd lz-print-agent-go
+git clone https://github.com/DemosGS1NI/print-agent-go.git
+cd print-agent-go
 
 # Build the binary
 go build -o lz-print-agent-local .
@@ -71,7 +38,6 @@ The agent will start on port 8080 by default.
 
 ## 📋 Requirements
 
-- **Docker** (for containerized deployment) OR
 - **Go 1.24+** (for building from source)
 - **Network access** to your thermal printers (typically port 9100)
 - **Web browser** with access to [LabelZoom Web App](https://www.labelzoom.net/app)
@@ -144,38 +110,25 @@ lz-print-agent-go/
 ├── main.go              # Main application code
 ├── main_test.go         # Unit tests
 ├── resources/           # Embedded resources (logo)
-├── Dockerfile           # Multi-stage Docker build
+├── scripts/             # Build/release helper scripts
 ├── go.mod               # Go module definition
 └── .github/
     └── workflows/       # CI/CD pipeline
 ```
 
-### Building Docker Image
-
-```bash
-docker build -t lz-print-agent .
-```
-
-The final image is only **~7.5MB** thanks to:
-- Multi-stage build
-- Scratch base image
-- Statically compiled Go binary
-
 ### CI/CD
 
 This project uses GitHub Actions for:
 - ✅ Automated testing on push/PR
-- ✅ Docker image building
 - ✅ Multi-platform builds (amd64, arm64)
-- ✅ Automatic publishing to Docker Hub on release tags
+- ✅ Automatic binary releases on semver tags (`v*.*.*`)
 
 ## 📥 Binary Releases (No GitHub Account Required)
 
 Windows and macOS binaries are published on each semantic version tag (`v*.*.*`).
 
-- Replace `YOUR_ORG` and `YOUR_REPO` with your real values.
-- Latest release page: `https://github.com/YOUR_ORG/YOUR_REPO/releases/latest`
-- Direct Windows ZIP (latest): `https://github.com/YOUR_ORG/YOUR_REPO/releases/latest/download/print-agent-windows-amd64.zip`
+- Latest release page: `https://github.com/DemosGS1NI/print-agent-go/releases/latest`
+- Direct Windows ZIP (latest): `https://github.com/DemosGS1NI/print-agent-go/releases/latest/download/print-agent-windows-amd64.zip`
 
 If this repository is public, end users can download these files without creating a GitHub account.
 
@@ -187,18 +140,6 @@ The release workflow supports automatic signing of the Windows `.exe` when these
 - `WINDOWS_SIGN_CERT_PASSWORD`: Password for the `.pfx` certificate
 
 If the secrets are not set, releases are still generated, but the Windows binary is unsigned.
-
-## 📦 Docker Hub
-
-Pre-built images are available on Docker Hub:
-
-**🔗 [hub.docker.com/r/labelzoom/lz-print-agent-local](https://hub.docker.com/r/labelzoom/lz-print-agent-local)**
-
-Pull the latest version:
-
-```bash
-docker pull labelzoom/lz-print-agent-local:latest
-```
 
 ## 🤝 Contributing
 
@@ -217,8 +158,8 @@ This project is licensed under the BSD 3-Clause License - see the [LICENSE](LICE
 ## 🔗 Links
 
 - **LabelZoom Web App**: [www.labelzoom.net/app](https://www.labelzoom.net/app)
-- **Docker Hub**: [hub.docker.com/r/labelzoom/lz-print-agent-local](https://hub.docker.com/r/labelzoom/lz-print-agent-local)
-- **Issues**: [GitHub Issues](https://github.com/yourusername/lz-print-agent-go/issues)
+- **Releases**: [github.com/DemosGS1NI/print-agent-go/releases](https://github.com/DemosGS1NI/print-agent-go/releases)
+- **Issues**: [GitHub Issues](https://github.com/DemosGS1NI/print-agent-go/issues)
 
 ## 💡 How It Works
 
