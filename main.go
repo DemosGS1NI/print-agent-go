@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"net"
 	"net/http"
+	"os"
+	"strings"
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
@@ -12,6 +14,43 @@ import (
 type printjob struct {
 	PrinterHostname string `json:"printerHostname"`
 	Text            string `json:"text"`
+}
+
+var defaultAllowOrigins = []string{
+	"https://www.browser-print.vercel.app",
+	"https://browser-print.vercel.app",
+	"http://localhost",
+	"http://localhost:3000",
+	"http://localhost:5173",
+	"https://nafcosa.vercel.app",
+	"https://www.nafcosa.vercel.app",
+	"http://nafcosa.vercel.app",
+}
+
+func getAllowOrigins() []string {
+	raw := strings.TrimSpace(os.Getenv("ALLOW_ORIGINS"))
+	if raw == "" {
+		origins := make([]string, len(defaultAllowOrigins))
+		copy(origins, defaultAllowOrigins)
+		return origins
+	}
+
+	parts := strings.Split(raw, ",")
+	origins := make([]string, 0, len(parts))
+	for _, part := range parts {
+		origin := strings.TrimSpace(part)
+		if origin != "" {
+			origins = append(origins, origin)
+		}
+	}
+
+	if len(origins) == 0 {
+		fallback := make([]string, len(defaultAllowOrigins))
+		copy(fallback, defaultAllowOrigins)
+		return fallback
+	}
+
+	return origins
 }
 
 func handlePing(c *gin.Context) {
@@ -54,7 +93,7 @@ func main() {
 	r := gin.Default()
 	r.SetTrustedProxies([]string{"127.0.0.1", "::1"})
 	r.Use(cors.New(cors.Config{
-		AllowOrigins: []string{"https://www.browser-print.vercel.app", "https://browser-print.vercel.app", "http://localhost", "http://localhost:3000", "http://localhost:5173"},
+		AllowOrigins: getAllowOrigins(),
 		AllowMethods: []string{"POST"},
 		AllowHeaders: []string{"Origin", "Content-Type"}, // TODO: Acess to fetch at 'http://localhost:8080/print' from origin 'http://localhost:3000' has been blocked by CORS policy: Request header field content-type is not allowed by Access-Control-Allow-Headers in preflight response.
 		// ExposeHeaders:    []string{"Content-Length"},

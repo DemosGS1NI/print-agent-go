@@ -54,10 +54,22 @@ The print agent uses the following default settings:
 
 ### Allowed CORS Origins
 
-The agent accepts requests only from allowed origins. Update this list to match your frontend domains.
+The agent accepts requests only from allowed origins. You can configure them with the `ALLOW_ORIGINS` environment variable (comma-separated list).
+
+Custom example:
+
+```bash
+export ALLOW_ORIGINS="https://www.browser-print.vercel.app,http://localhost:3000"
+./lz-print-agent-local
+```
+
+If `ALLOW_ORIGINS` is not set (or contains only empty values), the built-in defaults are used.
  
+- `https://www.browser-print.vercel.app`
+- `https://browser-print.vercel.app`
 - `http://localhost`
 - `http://localhost:3000`
+- `http://localhost:5173`
 
 ## 🖨️ Supported Printers
 
@@ -180,5 +192,4 @@ This project is licensed under the BSD 3-Clause License - see the [LICENSE](LICE
 3. Agent forwards ZPL/RAW data to printer via TCP
 4. Printer prints the label
 
----
-**Made with ❤️ for local printing workflows**
+

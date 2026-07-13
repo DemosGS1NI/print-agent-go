@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"net/http"
 	"net/http/httptest"
+	"reflect"
 	"testing"
 
 	"github.com/gin-gonic/gin"
@@ -71,5 +72,29 @@ func TestHandlePrintValidJSON(t *testing.T) {
 	err := json.Unmarshal(w.Body.Bytes(), &response)
 	assert.NoError(t, err)
 	assert.Contains(t, response["message"], "error connecting to printer")
+}
+
+func TestGetAllowOriginsDefault(t *testing.T) {
+	t.Setenv("ALLOW_ORIGINS", "")
+
+	got := getAllowOrigins()
+
+	assert.True(t, reflect.DeepEqual(defaultAllowOrigins, got))
+}
+
+func TestGetAllowOriginsCustom(t *testing.T) {
+	t.Setenv("ALLOW_ORIGINS", "https://app.example.com, http://localhost:3000")
+
+	got := getAllowOrigins()
+
+	assert.Equal(t, []string{"https://app.example.com", "http://localhost:3000"}, got)
+}
+
+func TestGetAllowOriginsFallbackOnEmptyValues(t *testing.T) {
+	t.Setenv("ALLOW_ORIGINS", "  ,   , ")
+
+	got := getAllowOrigins()
+
+	assert.True(t, reflect.DeepEqual(defaultAllowOrigins, got))
 }
 

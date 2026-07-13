@@ -1,4 +1,4 @@
-module labelzoom.net/print-driver
+module print-agent-go
 
 go 1.24.0
 
